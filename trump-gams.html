@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FC 24 Trump Card Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            display: inline-block;
+            width: 200px;
+            text-align: left;
+            background-color: #f4f4f4;
+        }
+        .stat {
+            margin: 5px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>FC 24 Trump Card Game</h1>
+    <div id="player1-card" class="card"></div>
+    <div id="player2-card" class="card"></div>
+    <h2 id="result">Choose a stat to compare!</h2>
+    <div id="buttons"></div>
+
+    <script>
+        // Sample player card data
+        const players = [
+            { name: "Mbappe", OVR: 91, PAC: 97, SHO: 89, PAS: 80, DRI: 92, DEF: 40, PHY: 77 },
+            { name: "Messi", OVR: 90, PAC: 81, SHO: 90, PAS: 91, DRI: 94, DEF: 35, PHY: 68 },
+            { name: "Haaland", OVR: 91, PAC: 89, SHO: 93, PAS: 75, DRI: 80, DEF: 44, PHY: 88 },
+            { name: "De Bruyne", OVR: 91, PAC: 74, SHO: 86, PAS: 93, DRI: 87, DEF: 64, PHY: 77 },
+            { name: "Van Dijk", OVR: 89, PAC: 72, SHO: 60, PAS: 71, DRI: 70, DEF: 91, PHY: 86 },
+        ];
+
+        // Function to get a random card
+        function getRandomCard() {
+            return players[Math.floor(Math.random() * players.length)];
+        }
+
+        // Display cards and initialize game
+        const player1Card = getRandomCard();
+        const player2Card = getRandomCard();
+        const player1CardDiv = document.getElementById("player1-card");
+        const player2CardDiv = document.getElementById("player2-card");
+
+        function displayCard(card, element) {
+            element.innerHTML = `
+                <h3>${card.name}</h3>
+                <div class="stat">OVR: ${card.OVR}</div>
+                <div class="stat">PAC: ${card.PAC}</div>
+                <div class="stat">SHO: ${card.SHO}</div>
+                <div class="stat">PAS: ${card.PAS}</div>
+                <div class="stat">DRI: ${card.DRI}</div>
+                <div class="stat">DEF: ${card.DEF}</div>
+                <div class="stat">PHY: ${card.PHY}</div>
+            `;
+        }
+
+        displayCard(player1Card, player1CardDiv);
+        displayCard(player2Card, player2CardDiv);
+
+        // Add buttons for stats
+        const stats = ["OVR", "PAC", "SHO", "PAS", "DRI", "DEF", "PHY"];
+        const buttonsDiv = document.getElementById("buttons");
+
+        stats.forEach(stat => {
+            const button = document.createElement("button");
+            button.textContent = `Compare ${stat}`;
+            button.addEventListener("click", () => compareStat(stat));
+            buttonsDiv.appendChild(button);
+        });
+
+        // Compare selected stat
+        function compareStat(stat) {
+            const resultDiv = document.getElementById("result");
+            const player1Value = player1Card[stat];
+            const player2Value = player2Card[stat];
+
+            if (player1Value > player2Value) {
+                resultDiv.textContent = `Player 1 wins! ${stat}: ${player1Value} vs ${player2Value}`;
+            } else if (player1Value < player2Value) {
+                resultDiv.textContent = `Player 2 wins! ${stat}: ${player1Value} vs ${player2Value}`;
+            } else {
+                resultDiv.textContent = `It's a draw! ${stat}: ${player1Value} vs ${player2Value}`;
+            }
+        }
+    </script>
+</body>
+</html>
